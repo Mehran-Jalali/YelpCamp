@@ -16,7 +16,7 @@
           class="form-control"
           type="text"
           id="title"
-          name="title"
+          name="campground[title]"
           placeholder="<%=campground.title%>"
           value="<%= campground.title %>"
           required
@@ -29,7 +29,7 @@
           class="form-control"
           type="text"
           id="location"
-          name="location"
+          name="campground[location]"
           placeholder="<%=campground.location%>"
           value="<%= campground.location%>"
           required
@@ -42,7 +42,7 @@
           class="form-control"
           type="text"
           id="image"
-          name="image"
+          name="campground[image]"
           value="<%= campground.image%>"
           required
         />
@@ -59,7 +59,7 @@
             placeholder="0.00"
             aria-label="price"
             aria-describedby="price-label"
-            name="price"
+            name="campground[price]"
             value="<%= campground.price%>"
             required
           />
@@ -71,7 +71,7 @@
         <textarea
           class="form-control"
           id="description"
-          name="description"
+          name="campground[description]"
           required
         >
 <%=campground.description %></textarea
