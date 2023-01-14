@@ -4,6 +4,8 @@ const ejsMate = require("ejs-mate");
 const path = require("path");
 const ExpressError = require("./utility/ExpressError");
 const methodOverride = require("method-override");
+const session = require("express-session");
+const flash = require("connect-flash");
 // Router -  Router -  Router -  Router -  Router
 const campgrounds = require("./routes/campgrounds");
 const reviews = require("./routes/reviews");
@@ -38,10 +40,31 @@ app.set("views", path.join(__dirname, "views"));
 //======================== How to Tell Express to Parse The Body or "req.body"
 app.use(express.urlencoded({ extended: true }));
 //============================================================================
-
 app.use(methodOverride("_method"));
-
 //======================================================================================
+app.use(express.static(path.join(__dirname, "public")));
+//======================================================================================
+const sessionConfig = {
+  secret: "thisshouldbeabettersecret!",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    //1000 : Miliseconds in a second, 60 seconds in a minute, 60 minutes in an hour, 24 hours in a day, 7 days in a week
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+app.use(session(sessionConfig));
+//============================================================================
+app.use(flash());
+//=====================Set up middleware for flash-message=======================================================
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+//============================================================================
 // Set The '/camogrounds' routes with campgrounds imported routes.
 app.use("/campgrounds", campgrounds);
 app.use("/campgrounds/:id/reviews", reviews);
